@@ -1,5 +1,7 @@
 //Kameron Gill
 //kgill2@ucsc.edu
+//Hasson Qayum
+//hqayum@ucsc.edu
 
 //Leds.h
 
