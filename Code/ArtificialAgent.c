@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <ctype.h>
+
 //CMPE13 Support Library
 #include "Agent.h"
 #include "CircularBuffer.h"
@@ -43,7 +44,7 @@ static ProtocolParserStatus proParserStatus; // return value of ProtocolDecode()
 static TurnOrder getTurnOrder; // variable for TurnOrder from Protocol.c
 static AgentEvent getAgentEvent; // values based on return value of ProtocolDecode()
 
-static int stringLength;
+static int stringLength; // gets return value for FSM
 static uint8_t validNData; // return value of validataNData
 static uint8_t oppData; // holds opponent data
 static int i; // used for delay
@@ -97,7 +98,6 @@ int AgentRun(char in, char *outBuffer)
         return stringLength;
         break;
     case AGENT_STATE_SEND_CHALLENGE_DATA:
-        // proParserStatus = ProtocolDecode(in, &enemyNData, NULL);
         // arrow to DETERMINE_ORDER
         if (proParserStatus == PROTOCOL_PARSED_CHA_MESSAGE) {
             getAgentEvent = AGENT_EVENT_RECEIVED_CHA_MESSAGE;
@@ -117,7 +117,6 @@ int AgentRun(char in, char *outBuffer)
         }
         break;
     case AGENT_STATE_DETERMINE_TURN_ORDER:
-        // proParserStatus = ProtocolDecode(in, &enemyNData, NULL);
         // arrow to option state
         if (proParserStatus == PROTOCOL_PARSED_DET_MESSAGE) {
             getAgentEvent = AGENT_EVENT_RECEIVED_DET_MESSAGE;
