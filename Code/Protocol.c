@@ -25,6 +25,7 @@
 // **** Declare any data types here ****
 
 // States for our FSM, used in ProtocolDecode()
+
 typedef enum {
     WAITING,
     RECORDING,
@@ -34,6 +35,7 @@ typedef enum {
 } ParserState;
 
 // struct based off rubric for lab
+
 typedef struct {
     char sentence[PROTOCOL_MAX_MESSAGE_LEN]; // character array for our struct
     int index; // index of character array
@@ -45,8 +47,7 @@ typedef struct {
 
 // Initialize our struct
 static ProtocolDecodeVariables proDecode = {
-    {}, 0, WAITING, 0
-};
+    {}, 0, WAITING, 0};
 //proDecode = {{}, 0, WAITING, 0};
 //proDecode.index = 0;
 //proDecode.state = WAITING;
@@ -77,7 +78,7 @@ static uint8_t AsciiToHex(char in); // converts ASCII encoded hex-char to numeri
  */
 int ProtocolEncodeCooMessage(char *message, const GuessData *data)
 {
-    // Got guidance from lab on Encoding, and it's pretty straightforward
+    // Got guidance from tutoring on Encoding, and it's pretty straightforward
     StringClearMessage(message);
     char cooMessage[PROTOCOL_MAX_PAYLOAD_LEN];
     sprintf(cooMessage, PAYLOAD_TEMPLATE_COO, data->row, data->col);
@@ -91,7 +92,7 @@ int ProtocolEncodeCooMessage(char *message, const GuessData *data)
  */
 int ProtocolEncodeHitMessage(char *message, const GuessData *data)
 {
-    // Got guidance from lab on Encoding, and it's pretty straightforward
+    // Got guidance from tutoring on Encoding, and it's pretty straightforward
     StringClearMessage(message);
     char hitMessage[PROTOCOL_MAX_PAYLOAD_LEN];
     sprintf(hitMessage, PAYLOAD_TEMPLATE_HIT, data->row, data->col, data->hit);
@@ -105,7 +106,7 @@ int ProtocolEncodeHitMessage(char *message, const GuessData *data)
  */
 int ProtocolEncodeChaMessage(char *message, const NegotiationData *data)
 {
-    // Got guidance from lab on Encoding, and it's pretty straightforward
+    // Got guidance from tutoring on Encoding, and it's pretty straightforward
     StringClearMessage(message);
     char chaMessage[PROTOCOL_MAX_PAYLOAD_LEN];
     sprintf(chaMessage, PAYLOAD_TEMPLATE_CHA, data->encryptedGuess, data->hash);
@@ -119,7 +120,7 @@ int ProtocolEncodeChaMessage(char *message, const NegotiationData *data)
  */
 int ProtocolEncodeDetMessage(char *message, const NegotiationData *data)
 {
-    // Got guidance from lab on Encoding, and it's pretty straightforward
+    // Got guidance from tutoring on Encoding, and it's pretty straightforward
     StringClearMessage(message);
     char detMessage[PROTOCOL_MAX_PAYLOAD_LEN];
     sprintf(detMessage, PAYLOAD_TEMPLATE_DET, data->guess, data->encryptionKey);
@@ -353,22 +354,30 @@ TurnOrder ProtocolGetTurnOrder(const NegotiationData *myData, const NegotiationD
     // check least significant bit and compare with who is closest
     if ((data & 0x01) == 1) {
         if (myData->guess > oppData->guess) {
+            //printf("1, my > opp\n");
             return TURN_ORDER_START;
         } else if (myData->guess < oppData->guess) {
+            //printf("1, my < opp\n");
             return TURN_ORDER_DEFER;
         } else { // TIE!
+            //printf("1, TIE\n");
             return TURN_ORDER_TIE;
         }
     } else { // (data & 0x01) == 0
         if (myData->guess > oppData->guess) {
+            //printf("0, my > opp\n");
             return TURN_ORDER_DEFER;
         } else if (myData->guess < oppData->guess) {
+            //printf("0, my < opp\n");
             return TURN_ORDER_START;
         } else { // TIE!
+            //printf("0, TIE\n");
             return TURN_ORDER_TIE;
         }
     }
 }
+
+// Got guidance from tutoring
 
 static void StringClearMessage(char in[])
 {
@@ -377,6 +386,8 @@ static void StringClearMessage(char in[])
         in[i] = '\0';
     }
 }
+
+// Got guidance from tutoring
 
 static uint8_t FunctionChecksum(char in[])
 {
@@ -388,7 +399,6 @@ static uint8_t FunctionChecksum(char in[])
     return bitOp;
 }
 
-// Helper function used in FSM
 static int ValidInput(char in)
 {
     if (in >= '0' && in <= '9') {
@@ -403,6 +413,8 @@ static int ValidInput(char in)
     return STANDARD_ERROR;
 }
 
+// Got guidance from tutoring
+
 static uint8_t AsciiToHex(char in)
 {
     if (ValidInput(in) == STANDARD_ERROR) {
@@ -416,5 +428,4 @@ static uint8_t AsciiToHex(char in)
             return (in - 87);
         }
     }
-    return STANDARD_ERROR;
 }
