@@ -1,1 +1,2 @@
-# Battle-Boats
+# Battleboats
+Created a game similar to Hasbro's Battleship but for the PIC32. In order to play this game, you will need to hookup two PIC32s and that is explained in the Lab Manual. The goal of this project was to work with a partner and be able to implement some files in C and make the game run as intended. Lab9.zip contains all the starter code that was provided, and in the folder labeled "code" you will see all the starter code as well as the files my partner and I implemented.
